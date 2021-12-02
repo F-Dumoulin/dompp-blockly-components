@@ -2,12 +2,14 @@
 
 <html>
   <head>
+
     <meta charset="utf-8" />
-    <title>&lt;my-element> Demo</title>
+    <title>Demo</title>
     <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
     <script src="../node_modules/lit/polyfill-support.js"></script>
-    <script type="module" src="../my-element.js"></script>
     <script type="module" src="../src/test-editor.js"></script>
+    <script type="module" src="../src/basic-selection.js"></script>
+    <script type="module" src="../src/advanced-selection.js"></script>
 
     <script src="../blockly/blockly_compressed.js"></script>
     <script src="../blockly/blocks_compressed.js"></script>
@@ -24,14 +26,10 @@
     <script src="../blocks/action.js"></script>
     <script src="../blocks/other.js"></script>
 
-    <style>
-      p {
-        border: solid 1px blue;
-        padding: 8px;
-      }
-    </style>
   </head>
   <body>
     <test-editor></test-editor>
+    <basic-selection></basic-selection>
+    <advanced-selection></advanced-selection>
   </body>
 </html>
