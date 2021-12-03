@@ -41,7 +41,7 @@ export class BasicSelection extends LitElement {
 				margin-bottom: 7.5px;
 				display: flex;
 				flex-flow: row nowrap;
-				justify-content: space-between;
+				justify-content: flex-start;
 			}
 
 			.select-div ul span {
@@ -51,7 +51,7 @@ export class BasicSelection extends LitElement {
 			}
 
 			.select-div input[type=checkbox] {
-				margin-left: 15px;
+				margin-right: 10px;
 			}
 
 			.select-div hr {
@@ -139,8 +139,8 @@ export class BasicSelection extends LitElement {
 	        				(item, i) => html`
 								${(i != 0) ? html`<hr/>` : ''}
 	        					<li>
-	        						<span title="${item.url}">${item.url}</span>
-									<input class="page-check" type="checkbox"/>
+									<input id="page-${i}" class="page-check" type="checkbox"/>
+	        						<label for="page-${i}" title="${item.url}">${item.url}</span>
 								</li>
 	        				`
 	        			)}
@@ -157,8 +157,8 @@ export class BasicSelection extends LitElement {
 	        				(item, i) => html`
 								${(i != 0) ? html`<hr/>` : ''}
 	        					<li>
-	        						<span>${item.name}</span>
-									<input class="page-check" type="checkbox"/>
+									<input id="test-${i}" class="page-check" type="checkbox"/>
+	        						<label for="test-${i}">${item.name}</span>
 								</li>
 	        				`
 	        			)}

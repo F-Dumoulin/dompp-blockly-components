@@ -73,7 +73,11 @@ export class AdvancedSelection extends LitElement {
 				margin-bottom: 7.5px;
 				display: flex;
 				flex-flow: row nowrap;
-				justify-content: space-between;
+				justify-content: flex-start;
+			}
+
+			.page-card input[type=checkbox] {
+				margin-right: 10px;
 			}
 
 			.page-card hr {
@@ -131,7 +135,7 @@ export class AdvancedSelection extends LitElement {
 		return html`
 			<div id="pageDiv" class="flex wrap center">
 				${this.listPages.map(
-					(itemPage) => html`
+					(itemPage, i) => html`
 						<div class="page-card">
 	        				<div class="top">
 			        			<h3 title="${itemPage.url}">${itemPage.url}</h3>
@@ -139,11 +143,11 @@ export class AdvancedSelection extends LitElement {
 			        		</div>
 							<ul>
 								${this.listTests.map(
-									(itemTest, i) => html`
-										${(i != 0) ? html`<hr/>` : ''}
+									(itemTest, j) => html`
+										${(j != 0) ? html`<hr/>` : ''}
 										<li>
-											<span>${itemTest.name}</span>
-											<input type="checkbox"/>
+											<input id="${i}-${j}" type="checkbox"/>
+											<label for="${i}-${j}">${itemTest.name}</label>
 										</li>
 									`
 								)}
