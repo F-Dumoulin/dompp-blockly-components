@@ -243,8 +243,9 @@ export class AdvancedSelection extends LitElement {
 		}
 		else { //go on 
 			this.shadowRoot.getElementById("error").innerHTML = "";
-			console.log(content);
-			//...
+
+			let event = new CustomEvent('run-tests', { detail : { data : content }});
+			this.dispatchEvent(event);
 		}
 	}
 }

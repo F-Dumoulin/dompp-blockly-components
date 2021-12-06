@@ -56,9 +56,20 @@
             {"url": "www.site.com/page3"}
         ] '
     >
-        <script id="dpptm-data-tests" type="application/json">
-            
-        </script>
     </dompp-test-manager>
+    <script type="text/javascript">
+
+            let testManager = document.querySelector("dompp-test-manager");
+            testManager.addEventListener('save-tests', (e) => {
+                console.log(e.detail.type);
+                console.log(e.detail.data);
+                //...
+            });
+
+            testManager.addEventListener('run-tests', (e) => {
+                console.log(e.detail.data);
+                //...
+            });
+    </script>
   </body>
 </html>

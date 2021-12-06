@@ -15,6 +15,8 @@ export class TestEditor extends LitElement {
 			this.listTests = JSON.parse(this.getAttribute("data-tests"));
 		}
 
+		this.saveCallback = this.getAttribute("data-save-callback");
+
 		this.requestUpdate();
 	}
 
@@ -268,6 +270,7 @@ export class TestEditor extends LitElement {
 			//removes test from test list
 			this.listTests = this.listTests.filter(test => test !== item);
 			this.requestUpdate();
+			this.saveTestEvent("delete");
 
 			//updates current test
 			if(item === this.currentTest) {
@@ -285,6 +288,7 @@ export class TestEditor extends LitElement {
 
 			item.name = name;
 			this.requestUpdate();
+			this.saveTestEvent("rename");
 		}
 	}
 
@@ -311,15 +315,25 @@ export class TestEditor extends LitElement {
 			this.currentTest = newTest;
 
 			this.requestUpdate();
+			this.saveTestEvent("create");
 		}
 	}
 
 	saveTest() {
 
 		//saves the blocks currently in the editor as xml inside the current test
-		let xml = Blockly.Xml.workspaceToDom(this.workspace);
-		let text = Blockly.Xml.domToText(xml);
-		this.currentTest.xml = text;
+		if(this.currentTest != {}) {
+			let xml = Blockly.Xml.workspaceToDom(this.workspace);
+			let text = Blockly.Xml.domToText(xml);
+			this.currentTest.xml = text;
+
+			this.saveTestEvent("save");
+		}
+	}
+
+	saveTestEvent(eventType) {
+		let event = new CustomEvent('save-tests', { detail : { data: this.listTests, type: eventType }});
+		this.dispatchEvent(event);
 	}
 
 	//prevents the component from creating a shadow root

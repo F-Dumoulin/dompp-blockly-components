@@ -219,10 +219,11 @@ export class BasicSelection extends LitElement {
 		if(Object.keys(content.tests).length == 0 || Object.keys(content.pages).length == 0) { //display an error
 			this.shadowRoot.getElementById("error").innerHTML = "Select at least one page and one test";
 		}
-		else { //go on 
+		else { //...
 			this.shadowRoot.getElementById("error").innerHTML = "";
-			console.log(content);
-			//...
+
+			let event = new CustomEvent('run-tests', { detail : { data : content }});
+			this.dispatchEvent(event);
 		}
 	}
 }

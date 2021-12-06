@@ -20,9 +20,34 @@ export class DOMPPTestManager extends LitElement {
 		}
 	}
 
+	firstUpdated() {
+		let testEditor = document.querySelector("test-editor");
+
+		testEditor.addEventListener('save-tests', (e) => {
+			let event = new CustomEvent('save-tests', { detail : e.detail });
+			this.dispatchEvent(event);
+		});
+
+		let basicSelection = document.querySelector("basic-selection");
+
+		basicSelection.addEventListener('run-tests', (e) => {
+			let event = new CustomEvent('run-tests', {detail : e.detail });
+			this.dispatchEvent(event);
+		});
+
+		let advancedSelection = document.querySelector("advanced-selection");
+
+		advancedSelection.addEventListener('run-tests', (e) => {
+			let event = new CustomEvent('run-tests', {detail : e.detail });
+			this.dispatchEvent(event);
+		});
+	}
+
 	render() {
 		return html`
-			<test-editor data-tests="${JSON.stringify(this.listTests)}"></test-editor/>
+			<test-editor 
+				data-tests="${JSON.stringify(this.listTests)}"
+				data-save-callback="${this.saveCallback}"></test-editor/>
 			<basic-selection 
 				data-tests="${JSON.stringify(this.listTests)}"
 				data-pages="${JSON.stringify(this.listPages)}">
