@@ -4,17 +4,18 @@ export class TestEditor extends LitElement {
 
 	constructor() {
 		super();
-		this.listTests = [
-			{name: 'Test 1', current: false, xml: '<xml xmlns="https://developers.google.com/blockly/xml"><block type="evaluation" id="fZB;_z%6NTTVK?7YPgCz" x="100" y="100"><statement name="eval"><block type="q_forall" id="zmG`POaBj}Bf(]#F2m06"><value name="selector"><block type="s_findbyselector" id="$O*8Y6)DQa6-O~)7F3D["><field name="fbs_selector">h1</field></block></value><value name="condition"><block type="c_comparetovalue" id="!vAnk2D[W.[wlP7[TZbZ"><field name="cpt_value">100</field><value name="property"><block type="prop_offsettop" id="JkA[=+a@HR9X_+6-`Tx."></block></value><value name="operator"><block type="op_lesserorequal" id="R|X~fROYmzA64l:m}(q}"></block></value></block></value></block></statement></block></xml>'},
-			{name: 'Test 2', current: false, xml: '<xml xmlns="https://developers.google.com/blockly/xml"><block type="evaluation" id="fZB;_z%6NTTVK?7YPgCz" x="100" y="100"><statement name="eval"><block type="q_forall" id="zmG`POaBj}Bf(]#F2m06"><value name="selector"><block type="s_findbyselector" id="$O*8Y6)DQa6-O~)7F3D["><field name="fbs_selector">h1</field></block></value><value name="condition"><block type="c_comparetovalue" id="!vAnk2D[W.[wlP7[TZbZ"><field name="cpt_value">200</field><value name="property"><block type="prop_offsettop" id="JkA[=+a@HR9X_+6-`Tx."></block></value><value name="operator"><block type="op_lesserorequal" id="R|X~fROYmzA64l:m}(q}"></block></value></block></value></block></statement></block></xml>'},
-			{name: 'Test 3', current: false, xml: '<xml xmlns="https://developers.google.com/blockly/xml"><block type="evaluation" id="fZB;_z%6NTTVK?7YPgCz" x="100" y="100"><statement name="eval"><block type="q_forall" id="zmG`POaBj}Bf(]#F2m06"><value name="selector"><block type="s_findbyselector" id="$O*8Y6)DQa6-O~)7F3D["><field name="fbs_selector">h1</field></block></value><value name="condition"><block type="c_comparetovalue" id="!vAnk2D[W.[wlP7[TZbZ"><field name="cpt_value">300</field><value name="property"><block type="prop_offsettop" id="JkA[=+a@HR9X_+6-`Tx."></block></value><value name="operator"><block type="op_lesserorequal" id="R|X~fROYmzA64l:m}(q}"></block></value></block></value></block></statement></block></xml>'},
-			{name: 'Test 4', current: false, xml: '<xml xmlns="https://developers.google.com/blockly/xml"><block type="evaluation" id="fZB;_z%6NTTVK?7YPgCz" x="100" y="100"><statement name="eval"><block type="q_forall" id="zmG`POaBj}Bf(]#F2m06"><value name="selector"><block type="s_findbyselector" id="$O*8Y6)DQa6-O~)7F3D["><field name="fbs_selector">h1</field></block></value><value name="condition"><block type="c_comparetovalue" id="!vAnk2D[W.[wlP7[TZbZ"><field name="cpt_value">400</field><value name="property"><block type="prop_offsettop" id="JkA[=+a@HR9X_+6-`Tx."></block></value><value name="operator"><block type="op_lesserorequal" id="R|X~fROYmzA64l:m}(q}"></block></value></block></value></block></statement></block></xml>'},
-		];
+		this.listTests = [];
 		this.currentTest = {};
 	}
 
 	firstUpdated(changedProperties) {
 		this.workspace = Blockly.inject("dppte-blocklyDiv", {toolbox: document.getElementById('toolbox')});
+
+		if(this.getAttribute("data-tests") != null && this.getAttribute("data-tests") != "") {
+			this.listTests = JSON.parse(this.getAttribute("data-tests"));
+		}
+
+		this.requestUpdate();
 	}
 
 	render() {
@@ -48,11 +49,6 @@ export class TestEditor extends LitElement {
 
 				<div>
 					<button @click=${this.saveTest} class="dppte-button-1">Save Test</button>
-					<div id = "dppte-generateTests">
-						<button class="dppte-button-2">Generate Tests</button>
-						<a href="basic-selection.html" class="dppte-button-3">Basic Selection</a>
-						<a href="advanced-selection.html" class="dppte-button-3">Advanced Selection</a>
-					</div>
 				</div>
 
 			</div>
@@ -183,58 +179,6 @@ export class TestEditor extends LitElement {
 				.dppte-button-1:active {
 					transition: none;
 					filter: brightness(95%);
-				}
-
-				#dppte-generateTests {
-					display: inline-block;
-					min-height: 35px;
-					margin: 15px 0 0 10px;
-					border-radius: 5px;
-				}
-
-				#dppte-generateTests:hover {
-					background-color: #fff;
-					box-shadow: 0 2px 10px rgba(17, 39, 119, 0.05);
-				}
-				.dppte-button-2 {
-					min-width: 120px;
-					min-height: 35px;
-					background-color: #CAD3F8;
-					border: none;
-					border-radius: 5px;
-					color: #415BB5;
-					font-size: 0.9em;
-					box-shadow: 0 2px 10px rgba(17, 39, 119, 0.05);
-					cursor: pointer;
-					transition: filter 0.1s ease-in-out;
-				}
-
-				.dppte-button-2:hover {
-					filter: brightness(105%);
-				}
-
-				.dppte-button-3 {
-					display: none;
-					/*min-height: 35px;*/
-					padding: 0 10px;
-					background: none;
-					border: none;
-					font-size: 0.9em;
-					cursor: pointer;
-					color: #13204D;
-					text-decoration: none;
-				}
-
-				.dppte-button-3:hover {
-					color: #13204D;
-				}
-
-				.dppte-button-3:visited {
-					color: #13204D;
-				}
-
-				#dppte-generateTests:hover .dppte-button-3 {
-					display: inline-block;
 				}
 			</style>
 
