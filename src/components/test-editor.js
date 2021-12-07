@@ -3,22 +3,28 @@ import {LitElement, html, css} from 'lit';
 export class TestEditor extends LitElement {
 
 	constructor() {
+		//initialization
 		super();
 		this.listTests = [];
 		this.currentTest = {};
 	}
 
 	firstUpdated(changedProperties) {
+
+		//injecting the blockly editor into our component
 		this.workspace = Blockly.inject("dppte-blocklyDiv", {toolbox: document.getElementById('toolbox')});
 
+		//fetching data from attributes
 		let dataTests = this.getAttribute("data-tests");
 		if(dataTests != null && dataTests != "") {
 			this.listTests = JSON.parse(this.getAttribute("data-tests"));
 		}
 
+		//loads the first existing test into the editor
 		if(this.listTests.length > 0)
 			this.modifyTest(this.listTests[0]);
 
+		//update component display
 		this.requestUpdate();
 	}
 
@@ -277,9 +283,11 @@ export class TestEditor extends LitElement {
 			//updates current test
 			if(item === this.currentTest) {
 
+				//if at least one test exists, loads it into the editor
 				if(this.listTests.length > 0) {
 					this.modifyTest(this.listTests[0]);
 				}
+				//else clear the editor
 				else {
 					Blockly.mainWorkspace.clear();
 					this.currentTest = {};
@@ -341,6 +349,7 @@ export class TestEditor extends LitElement {
 		}
 	}
 
+	//dispatches an event including the test data and the type of action that triggered it
 	saveTestEvent(eventType) {
 		let event = new CustomEvent('save-tests', { detail : { data: this.listTests, type: eventType }});
 		this.dispatchEvent(event);

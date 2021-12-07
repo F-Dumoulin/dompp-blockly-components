@@ -59,14 +59,16 @@
     </dompp-test-manager>
     <script type="text/javascript">
 
+            //implementing a callback on the events provided by the test manager 
+
             let testManager = document.querySelector("dompp-test-manager");
-            testManager.addEventListener('save-tests', (e) => {
+            testManager.addEventListener('save-tests', (e) => { //callback on everytime a test is saved/created/deleted/renamed in the editor
                 console.log(e.detail.type);
                 console.log(e.detail.data);
                 //...
             });
 
-            testManager.addEventListener('run-tests', (e) => {
+            testManager.addEventListener('run-tests', (e) => { //callback on running tests with after selecting a test configuration 
                 console.log(e.detail.data);
                 //...
             });

@@ -7,14 +7,14 @@ export class DOMPPTestManager extends LitElement {
 
 
 	constructor() {
+		//initialization		
 		super();
-
 		this.listTests = [];
 		this.listPages = [];
 		this.basicSelection = document.createElement("basic-selection");
 		this.advancedSelection = document.createElement("advanced-selection");
 
-
+		//fetching data from attributes
 		let dataTests = this.getAttribute("data-tests"), dataPages = this.getAttribute("data-pages");
 		if(dataTests != null && dataTests != "") {
 			this.listTests = JSON.parse(this.getAttribute("data-tests"));
@@ -25,22 +25,28 @@ export class DOMPPTestManager extends LitElement {
 	}
 
 	firstUpdated() {
+
+		//fetching the test-editor element
 		this.testEditor = document.querySelector("test-editor");
 
+		//event listener initialization
 		this.testEditor.addEventListener('save-tests', (e) => {
-
+			//update manager test list
 			this.listTests = e.detail.data;
 
+			//makes the event go through to user level
 			let event = new CustomEvent('save-tests', { detail : e.detail });
 			this.dispatchEvent(event);
 		});
 
 		this.basicSelection.addEventListener('run-tests', (e) => {
+			//makes the event go through to user level
 			let event = new CustomEvent('run-tests', {detail : e.detail });
 			this.dispatchEvent(event);
 		});
 
 		this.advancedSelection.addEventListener('run-tests', (e) => {
+			//makes the event go through to user level
 			let event = new CustomEvent('run-tests', {detail : e.detail });
 			this.dispatchEvent(event);
 		});
@@ -58,7 +64,6 @@ export class DOMPPTestManager extends LitElement {
 			</div>
 			<test-editor 
 				data-tests="${JSON.stringify(this.listTests)}"
-				data-save-callback="${this.saveCallback}">
 			</test-editor/>
 			<style>
 
@@ -151,22 +156,24 @@ export class DOMPPTestManager extends LitElement {
 	}
 
 	generateBasicSelection() {
-
+		//changes the display of elements that are to be shown/hidden
 		this.testEditor.style.display = "none";
 		this.querySelector("#dpptm-generateTests").style.display = "none";
 		this.querySelector("#dpptm-backToEditor").style.display = "inline-block";
 
+		//sets the data attributes of the selection element and adds it to the DOM
 		this.basicSelection.setAttribute("data-tests", JSON.stringify(this.listTests));
 		this.basicSelection.setAttribute("data-pages", JSON.stringify(this.listPages));
 		this.testEditor.after(this.basicSelection);
 	}
 
 	generateAdvancedSelection() {
-
+		//changes the display of the test editor and other elements that are to be shown/hidden
 		this.testEditor.style.display = "none";
 		this.querySelector("#dpptm-generateTests").style.display = "none";
 		this.querySelector("#dpptm-backToEditor").style.display = "inline-block";
 
+		//sets the data attributes of the selection element and adds it to the DOM
 		this.advancedSelection.setAttribute("data-tests", JSON.stringify(this.listTests));
 		this.advancedSelection.setAttribute("data-pages", JSON.stringify(this.listPages));
 		this.testEditor.after(this.advancedSelection);
@@ -174,12 +181,13 @@ export class DOMPPTestManager extends LitElement {
 
 	backToEditor() {
 
+		//remove the selection element currently visible from the DOM
 		if(this.contains(this.basicSelection))
 			this.removeChild(this.basicSelection);
-
 		if(this.contains(this.advancedSelection))
 			this.removeChild(this.advancedSelection);
 
+		//changes the display of the test editor and other elements that are to be shown/hidden
 		this.testEditor.style.display = "block";
 		this.querySelector("#dpptm-generateTests").style.display = "inline-block";
 		this.querySelector("#dpptm-backToEditor").style.display = "none";

@@ -111,6 +111,7 @@ export class BasicSelection extends LitElement {
 	}
 
 	constructor() {
+		//initialization
 		super();
 		this.listTests = [];
 		this.listPages = [];
@@ -118,6 +119,7 @@ export class BasicSelection extends LitElement {
 
 	firstUpdated() {
 
+		//fetching data from attributes
 		let dataTests = this.getAttribute("data-tests"), dataPages = this.getAttribute("data-pages");
 		if(dataTests != null && dataTests != "") {
 			this.listTests = JSON.parse(this.getAttribute("data-tests"));
@@ -126,6 +128,7 @@ export class BasicSelection extends LitElement {
 			this.listPages = JSON.parse(this.getAttribute("data-pages"));
 		}
 
+		//update component display
 		this.requestUpdate();
 	}
 
@@ -219,9 +222,10 @@ export class BasicSelection extends LitElement {
 		if(Object.keys(content.tests).length == 0 || Object.keys(content.pages).length == 0) { //display an error
 			this.shadowRoot.getElementById("error").innerHTML = "Select at least one page and one test";
 		}
-		else { //...
+		else {
 			this.shadowRoot.getElementById("error").innerHTML = "";
 
+			//dispatching an event including the test configuration data
 			let event = new CustomEvent('run-tests', { detail : { data : content }});
 			this.dispatchEvent(event);
 		}

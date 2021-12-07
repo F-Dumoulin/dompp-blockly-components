@@ -116,6 +116,7 @@ export class AdvancedSelection extends LitElement {
 	}
 
 	constructor() {
+		//initialization
 		super();
 		this.listTests = [];
 		this.listPages = [];
@@ -123,6 +124,7 @@ export class AdvancedSelection extends LitElement {
 
 	firstUpdated() {
 
+		//fetching data from attributes
 		let dataTests = this.getAttribute("data-tests"), dataPages = this.getAttribute("data-pages");
 		if(dataTests != null && dataTests != "") {
 			this.listTests = JSON.parse(this.getAttribute("data-tests"));
@@ -131,6 +133,7 @@ export class AdvancedSelection extends LitElement {
 			this.listPages = JSON.parse(this.getAttribute("data-pages"));
 		}
 
+		//update component display
 		this.requestUpdate();
 	}
 
@@ -241,9 +244,10 @@ export class AdvancedSelection extends LitElement {
 		if(Object.keys(content.tests).length == 0 || Object.keys(content.pages).length == 0) { //display an error
 			this.shadowRoot.getElementById("error").innerHTML = "Select at least one test";
 		}
-		else { //go on 
+		else {
 			this.shadowRoot.getElementById("error").innerHTML = "";
 
+			//dispatching an event including the test configuration data
 			let event = new CustomEvent('run-tests', { detail : { data : content }});
 			this.dispatchEvent(event);
 		}
