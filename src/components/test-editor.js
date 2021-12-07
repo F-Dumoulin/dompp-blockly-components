@@ -11,11 +11,13 @@ export class TestEditor extends LitElement {
 	firstUpdated(changedProperties) {
 		this.workspace = Blockly.inject("dppte-blocklyDiv", {toolbox: document.getElementById('toolbox')});
 
-		if(this.getAttribute("data-tests") != null && this.getAttribute("data-tests") != "") {
+		let dataTests = this.getAttribute("data-tests");
+		if(dataTests != null && dataTests != "") {
 			this.listTests = JSON.parse(this.getAttribute("data-tests"));
 		}
 
-		this.saveCallback = this.getAttribute("data-save-callback");
+		if(this.listTests.length > 0)
+			this.modifyTest(this.listTests[0]);
 
 		this.requestUpdate();
 	}
@@ -274,9 +276,16 @@ export class TestEditor extends LitElement {
 
 			//updates current test
 			if(item === this.currentTest) {
-				Blockly.mainWorkspace.clear();
-				this.currentTest = {};
+
+				if(this.listTests.length > 0) {
+					this.modifyTest(this.listTests[0]);
+				}
+				else {
+					Blockly.mainWorkspace.clear();
+					this.currentTest = {};
+				}
 			}
+
 		}
 	}
 
@@ -307,12 +316,13 @@ export class TestEditor extends LitElement {
 
 			//creates new test and loads it into the test editor
 			Blockly.mainWorkspace.clear();
-			let newTest = {name: name, current: true, xml: '<xml xmlns="https://developers.google.com/blockly/xml"></xml>'};
+			let newTest = {name: name, xml: '<xml xmlns="https://developers.google.com/blockly/xml"></xml>'};
 			this.listTests.push(newTest);
 
 			//updates current test
 			this.currentTest.current = false;
 			this.currentTest = newTest;
+			this.currentTest.current = true;
 
 			this.requestUpdate();
 			this.saveTestEvent("create");

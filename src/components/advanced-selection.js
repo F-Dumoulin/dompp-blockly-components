@@ -123,11 +123,11 @@ export class AdvancedSelection extends LitElement {
 
 	firstUpdated() {
 
-		if(this.getAttribute("data-tests") != "") {
+		let dataTests = this.getAttribute("data-tests"), dataPages = this.getAttribute("data-pages");
+		if(dataTests != null && dataTests != "") {
 			this.listTests = JSON.parse(this.getAttribute("data-tests"));
 		}
-
-		if(this.getAttribute("data-pages") != "") {
+		if(dataPages != null && dataPages != "") {
 			this.listPages = JSON.parse(this.getAttribute("data-pages"));
 		}
 
