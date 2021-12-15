@@ -15,12 +15,19 @@ export class DOMPPTestManager extends LitElement {
 		this.advancedSelection = document.createElement("advanced-selection");
 
 		//fetching data from attributes
-		let dataTests = this.getAttribute("data-tests"), dataPages = this.getAttribute("data-pages");
+		let dataTests = this.getAttribute("data-tests"), dataPages = this.getAttribute("data-pages"),
+		 	dataCheckedB = this.getAttribute("data-checked-basic"), dataCheckedA = this.getAttribute("data-checked-advanced");
 		if(dataTests != null && dataTests != "") {
-			this.listTests = JSON.parse(this.getAttribute("data-tests"));
+			this.listTests = JSON.parse(dataTests);
 		}
 		if(dataPages != null && dataPages != "") {
-			this.listPages = JSON.parse(this.getAttribute("data-pages"));
+			this.listPages = JSON.parse(dataPages);
+		}
+		if(dataCheckedB != null && dataCheckedB != "") {
+			this.checkedB = JSON.parse(dataCheckedB);
+		}
+		if(dataCheckedA != null && dataCheckedA != "") {
+			this.checkedA = JSON.parse(dataCheckedA);
 		}
 	}
 
@@ -33,19 +40,25 @@ export class DOMPPTestManager extends LitElement {
 		this.testEditor.addEventListener('save-tests', (e) => {
 			//update manager test list
 			this.listTests = e.detail.data;
-
+			//
+			this.basicSelection.updateTests(this.listTests);
+			this.advancedSelection.updateTests(this.listTests);
 			//makes the event go through to user level
 			let event = new CustomEvent('save-tests', { detail : e.detail });
 			this.dispatchEvent(event);
 		});
 
 		this.basicSelection.addEventListener('run-tests', (e) => {
+			//update checked
+			this.checkedB = JSON.parse(e.detail.data);
 			//makes the event go through to user level
 			let event = new CustomEvent('run-tests', {detail : e.detail });
 			this.dispatchEvent(event);
 		});
 
 		this.advancedSelection.addEventListener('run-tests', (e) => {
+			//update checked
+			this.checkedA = JSON.parse(e.detail.data);
 			//makes the event go through to user level
 			let event = new CustomEvent('run-tests', {detail : e.detail });
 			this.dispatchEvent(event);
@@ -164,6 +177,7 @@ export class DOMPPTestManager extends LitElement {
 		//sets the data attributes of the selection element and adds it to the DOM
 		this.basicSelection.setAttribute("data-tests", JSON.stringify(this.listTests));
 		this.basicSelection.setAttribute("data-pages", JSON.stringify(this.listPages));
+		this.basicSelection.setAttribute("data-checked", JSON.stringify(this.checkedB));
 		this.testEditor.after(this.basicSelection);
 	}
 
@@ -176,16 +190,21 @@ export class DOMPPTestManager extends LitElement {
 		//sets the data attributes of the selection element and adds it to the DOM
 		this.advancedSelection.setAttribute("data-tests", JSON.stringify(this.listTests));
 		this.advancedSelection.setAttribute("data-pages", JSON.stringify(this.listPages));
+		this.advancedSelection.setAttribute("data-checked", JSON.stringify(this.checkedA));
 		this.testEditor.after(this.advancedSelection);
 	}
 
 	backToEditor() {
 
 		//remove the selection element currently visible from the DOM
-		if(this.contains(this.basicSelection))
+		if(this.contains(this.basicSelection)) {
 			this.removeChild(this.basicSelection);
-		if(this.contains(this.advancedSelection))
+			this.basicSelection.updateChecked(JSON.stringify(this.checkedB));
+		}
+		if(this.contains(this.advancedSelection)) {
 			this.removeChild(this.advancedSelection);
+			this.advancedSelection.updateChecked(JSON.stringify(this.checkedA));
+		}
 
 		//changes the display of the test editor and other elements that are to be shown/hidden
 		this.testEditor.style.display = "block";

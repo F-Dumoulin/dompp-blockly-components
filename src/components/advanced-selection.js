@@ -122,10 +122,10 @@ export class AdvancedSelection extends LitElement {
 		this.listPages = [];
 	}
 
-	firstUpdated() {
+	async firstUpdated() {
 
 		//fetching data from attributes
-		let dataTests = this.getAttribute("data-tests"), dataPages = this.getAttribute("data-pages");
+		let dataTests = this.getAttribute("data-tests"), dataPages = this.getAttribute("data-pages"), dataChecked = this.getAttribute("data-checked");
 		if(dataTests != null && dataTests != "") {
 			this.listTests = JSON.parse(this.getAttribute("data-tests"));
 		}
@@ -135,6 +135,10 @@ export class AdvancedSelection extends LitElement {
 
 		//update component display
 		this.requestUpdate();
+		await this.updateComplete;
+
+		//apply check configuration from attribute
+		this.updateChecked(dataChecked);
 	}
 
 	render() {
@@ -222,21 +226,21 @@ export class AdvancedSelection extends LitElement {
 		for(let i=0; i<this.listPages.length; i++) {
 
 			//retrieves all boxes
-			let testBoxes = pageCards[i].querySelectorAll("input[type=checkbox]"), testIDs = [];
+			let testBoxes = pageCards[i].querySelectorAll("input[type=checkbox]"), testNames = [];
 
 			//for each box
 			for(let j=0; j<this.listTests.length; j++) {
 				//if the test is selected
 				if(testBoxes[j].checked) {
-					testIDs.push(j);//add his ID to the list of tests to run on this page
-					content.tests[j] = this.listTests[j].xml;//add him to content with a unique ID as the key and the Blockly generated xml as the value
+					testNames.push(this.listTests[j].name);//add his ID to the list of tests to run on this page
+					content.tests[this.listTests[j].name] = this.listTests[j].xml;//add him to content with a unique ID as the key and the Blockly generated xml as the value
 				}
 			}
 
 			//if at least one test has been selected on the page
-			if(testIDs.length > 0) {
+			if(testNames.length > 0) {
 				//add it to content with its URL as the key and the IDs of the tests to run on the page as the value
-				content.pages[this.listPages[i].url] = testIDs;
+				content.pages[this.listPages[i].url] = testNames;
 			}
 		}
 
@@ -248,8 +252,43 @@ export class AdvancedSelection extends LitElement {
 			this.shadowRoot.getElementById("error").innerHTML = "";
 
 			//dispatching an event including the test configuration data
-			let event = new CustomEvent('run-tests', { detail : { data : content }});
+			let event = new CustomEvent('run-tests', { detail : { data : JSON.stringify(content), selection : "advanced" }});
 			this.dispatchEvent(event);
+		}
+	}
+
+	updateTests(dataTests) {
+		this.listTests = dataTests;
+		this.requestUpdate();
+	}
+
+	updateChecked(dataChecked) {
+
+		if(dataChecked != null && dataChecked != "") {
+			dataChecked = JSON.parse(dataChecked);
+
+			let pageCards = this.shadowRoot.querySelectorAll(".page-card");
+
+			//for each page
+			for(let i=0; i<this.listPages.length; i++) {
+
+				let testBoxes = pageCards[i].querySelectorAll("input[type=checkbox]");
+
+				if(this.listPages[i].url in dataChecked.pages) {
+					let url = this.listPages[i].url
+
+					//check selected tests
+					for(let j=0; j<this.listTests.length; j++) {
+
+						if(dataChecked.pages[url].indexOf(this.listTests[j].name) > -1) {
+							testBoxes[j].checked = true;
+						}
+						else {
+							testBoxes[j].checked = false;
+						}
+					}
+				}
+			}
 		}
 	}
 }

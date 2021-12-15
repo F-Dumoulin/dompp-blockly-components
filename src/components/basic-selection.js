@@ -117,10 +117,10 @@ export class BasicSelection extends LitElement {
 		this.listPages = [];
 	}
 
-	firstUpdated() {
+	async firstUpdated() {
 
 		//fetching data from attributes
-		let dataTests = this.getAttribute("data-tests"), dataPages = this.getAttribute("data-pages");
+		let dataTests = this.getAttribute("data-tests"), dataPages = this.getAttribute("data-pages"), dataChecked = this.getAttribute("data-checked");
 		if(dataTests != null && dataTests != "") {
 			this.listTests = JSON.parse(this.getAttribute("data-tests"));
 		}
@@ -130,6 +130,10 @@ export class BasicSelection extends LitElement {
 
 		//update component display
 		this.requestUpdate();
+		await this.updateComplete;
+
+		//apply check configuration from attribute
+		this.updateChecked(dataChecked);
 	}
 
 	render() {
@@ -199,22 +203,22 @@ export class BasicSelection extends LitElement {
 
 	runTests() {
 
-		let content = {tests: {}, pages: {}}, testIDs = [];
+		let content = {tests: {}, pages: {}}, testNames = [];
 		let testBoxes = this.shadowRoot.querySelectorAll("#testSelec input[type=checkbox]");
 		let pageBoxes = this.shadowRoot.querySelectorAll("#pageSelec input[type=checkbox]");
 
 		//retrieves all checked test ad add them to content with a unique ID as the key and the blockly generated xml as the value
 		for(let i=0; i<this.listTests.length; i++) {
 			if(testBoxes[i].checked) {
-				content.tests[i] = this.listTests[i].xml;
-				testIDs.push(i);
+				content.tests[this.listTests[i].name] = this.listTests[i].xml;
+				testNames.push(this.listTests[i].name);
 			}
 		}
 
 		//retrieves all checked pages and add them to content with its URL as the key and the IDs of the tests to run on the page as the value
 		for(let i=0; i<this.listPages.length; i++) {
 			if(pageBoxes[i].checked) {
-				content.pages[this.listPages[i].url] = testIDs;
+				content.pages[this.listPages[i].url] = testNames;
 			}
 		}
 
@@ -226,8 +230,46 @@ export class BasicSelection extends LitElement {
 			this.shadowRoot.getElementById("error").innerHTML = "";
 
 			//dispatching an event including the test configuration data
-			let event = new CustomEvent('run-tests', { detail : { data : content }});
+			let event = new CustomEvent('run-tests', { detail : { data : JSON.stringify(content), selection : "basic" }});
 			this.dispatchEvent(event);
+		}
+	}
+
+	updateTests(dataTests) {
+		this.listTests = dataTests;
+		this.requestUpdate();
+	}
+
+	updateChecked(dataChecked) {
+
+		if(dataChecked != null && dataChecked != "") {
+			dataChecked = JSON.parse(dataChecked);
+
+			let testBoxes = this.shadowRoot.querySelectorAll("#testSelec input[type=checkbox]");
+			let pageBoxes = this.shadowRoot.querySelectorAll("#pageSelec input[type=checkbox]");
+
+			//checks selected pages
+			for(let i=0; i<this.listPages.length; i++) {
+				
+				if(this.listPages[i].url in dataChecked.pages) {
+					pageBoxes[i].checked = true;
+				}
+				else {
+					pageBoxes[i].checked = false;
+				}
+			}
+
+			//checks selected tests
+			for(let i=0; i<this.listTests.length; i++) {
+				testBoxes[i].checked = false;
+
+				for(const [key, value] of Object.entries(dataChecked.pages)) {
+
+					if(value.indexOf(this.listTests[i].name) > -1) {
+						testBoxes[i].checked = true;
+					}
+				}
+			}
 		}
 	}
 }

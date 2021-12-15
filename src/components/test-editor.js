@@ -299,7 +299,21 @@ export class TestEditor extends LitElement {
 
 	renameTest(item) {
 
-		let name = prompt("Please enter a name for your test", "New Name");
+		let unique = true, pname = item.name, name = "";
+
+		do {
+
+			name = prompt("Please enter a UNIQUE name for your test", name);
+			unique = true;
+
+			if(name != pname) {
+				for(let i=0; i<this.listTests.length; i++) {
+					if(name == this.listTests[i].name)
+						unique = false;
+				}
+			}
+
+		} while(!unique);
 
 		if(name != "" && name != null) {
 
@@ -318,7 +332,18 @@ export class TestEditor extends LitElement {
 
 	newTest() {
 
-		let name = prompt("Please enter a name for your test", "New Test");
+		let unique = true, name = "";
+		do {
+
+			name = prompt("Please enter a UNIQUE name for your test", name);
+			unique = true;
+
+			for(let i=0; i<this.listTests.length; i++) {
+				if(name == this.listTests[i].name)
+					unique = false;
+			}
+
+		} while(!unique);
 
 		if(name != "" && name != null) {
 
@@ -351,7 +376,7 @@ export class TestEditor extends LitElement {
 
 	//dispatches an event including the test data and the type of action that triggered it
 	saveTestEvent(eventType) {
-		let event = new CustomEvent('save-tests', { detail : { data: this.listTests, type: eventType }});
+		let event = new CustomEvent('save-tests', { detail : { data: JSON.stringify(this.listTests), type: eventType }});
 		this.dispatchEvent(event);
 	}
 
