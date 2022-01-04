@@ -4,8 +4,8 @@ Blockly.Blocks['prop_width'] = {
         .appendField("Width");
     this.setOutput(true, "Property");
     this.setColour(290);
- this.setTooltip("");
- this.setHelpUrl("");
+    this.setTooltip("");
+    this.setHelpUrl("");
   }
 };
 
@@ -113,51 +113,51 @@ Blockly.Blocks['prop_fontfamily'] = {
 
 
 Blockly.JavaScript['prop_width'] = function(block) {
-  var code = 'new dompp.DimensionWidth()';
+  let code = 'new dompp.DimensionWidth()';
   return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
 Blockly.JavaScript['prop_color'] = function(block) {
-  var code = 'new dompp.Color()';
+  let code = 'new dompp.Color()';
   return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
 Blockly.JavaScript['prop_height'] = function(block) {
-  var code = 'new dompp.DimenseionHeight()';
+  let code = 'new dompp.DimenseionHeight()';
   return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
 Blockly.JavaScript['prop_offsettop'] = function(block) {
-  var code = 'new dompp.PageOffsetTop()';
+  let code = 'new dompp.PageOffsetTop()';
   return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
 Blockly.JavaScript['prop_offsetleft'] = function(block) {
-  var code = 'new dompp.PageOffsetLeft()';
+  let code = 'new dompp.PageOffsetLeft()';
   return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
 Blockly.JavaScript['prop_clientoffsettop'] = function(block) {
-  var code = 'new dompp.ClientOffsetTop()';
+  let code = 'new dompp.ClientOffsetTop()';
   return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
 Blockly.JavaScript['prop_clientoffsetleft'] = function(block) {
-  var code = 'new dompp.ClientOffsetLeft()';
+  let code = 'new dompp.ClientOffsetLeft()';
   return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
 Blockly.JavaScript['prop_fontsize'] = function(block) {
-  var code = 'new dompp.FontSize()';
+  let code = 'new dompp.FontSize()';
   return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
 Blockly.JavaScript['prop_fontweight'] = function(block) {
-  var code = 'new dompp.FontWeight()';
+  let code = 'new dompp.FontWeight()';
   return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
 Blockly.JavaScript['prop_fontfamily'] = function(block) {
-  var code = 'new dompp.FontFamily()';
+  let code = 'new dompp.FontFamily()';
   return [code, Blockly.JavaScript.ORDER_NONE];
 };

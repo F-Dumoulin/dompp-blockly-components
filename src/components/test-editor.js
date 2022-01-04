@@ -209,19 +209,33 @@ export class TestEditor extends LitElement {
 			    <block type="s_findbyid">
 			      <field name="fbi_id">main</field>
 			    </block>
+			    <block type="s_registered_elements">
+			      <field name="re_variable">elements</field>
+			    </block>
 			  </category>
 			  <category name="Condition">
+			    <block type="c_sameheight"></block>
+			    <block type="c_samewidth"></block>
+			    <block type="c_sameoffsettop"></block>
+			    <block type="c_sameoffsetleft"></block>
+			    <block type="c_horizontallycentered"></block>
+			    <block type="c_verticallycentered"></block>
+			    <block type="c_comparetwoelems"></block>
 			    <block type="c_comparetovalue">
 			      <field name="cpt_value">0</field>
 			    </block>
-			    <block type="c_comparetwoelems"></block>
-			    <block type="c_sameoffsettop"></block>
 			  </category>
 			  <category name="Property">
 			    <block type="prop_width"></block>
+			    <block type="prop_color"></block>
 			    <block type="prop_height"></block>
 			    <block type="prop_offsettop"></block>
-			    <block type="prop_color"></block>
+			    <block type="prop_offsetleft"></block>
+			    <block type="prop_clientoffsettop"></block>
+			    <block type="prop_clientoffsetleft"></block>
+			    <block type="prop_fontsize"></block>
+			    <block type="prop_fontweight"></block>
+			    <block type="prop_fontfamily"></block>
 			  </category>
 			  <category name="Operator">
 			    <block type="op_equal"></block>
@@ -251,6 +265,10 @@ export class TestEditor extends LitElement {
 			  </category>
 			  <category name="Other">
 			    <block type="evaluation"></block>
+			    <block type="evaluation_variable"></block>
+			    <block type="registerbyselector">
+			      <field name="rbs_selector">#main</field>
+			   	</block>
 			  </category>
 			</xml>
 		`;
@@ -326,8 +344,9 @@ export class TestEditor extends LitElement {
 	exportTest(item) {
 
 		//temporary
-		//for now just outputs the tests xml in the console 
-		console.log(item.xml);
+		//for now just outputs the tests xml in the console
+		//console.log(item.xml);
+		console.log(Blockly.JavaScript.workspaceToCode(this.workspace));
 	}
 
 	newTest() {

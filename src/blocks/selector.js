@@ -8,7 +8,7 @@ Blockly.Blocks['s_findbyselector'] = {
     this.setInputsInline(false);
     this.setOutput(true, "Selector");
     this.setColour(230);
- this.setTooltip("Test");
+ this.setTooltip("");
  this.setHelpUrl("");
   }
 };
@@ -23,7 +23,7 @@ Blockly.Blocks['s_findbyclass'] = {
     this.setInputsInline(false);
     this.setOutput(true, "Selector");
     this.setColour(230);
- this.setTooltip("Test");
+ this.setTooltip("");
  this.setHelpUrl("");
   }
 };
@@ -38,10 +38,25 @@ Blockly.Blocks['s_findbyid'] = {
     this.setInputsInline(false);
     this.setOutput(true, "Selector");
     this.setColour(230);
- this.setTooltip("Test");
+ this.setTooltip("");
  this.setHelpUrl("");
   }
 };
+
+Blockly.Blocks['s_registered_elements'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Registered Element(s)")
+    this.appendDummyInput()
+        .appendField("Variable Name")
+        .appendField(new Blockly.FieldTextInput("elements"), "re_variable");
+    this.setInputsInline(false);
+    this.setOutput(true, "Selector");
+    this.setColour(180);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+} 
 
 
 
@@ -49,22 +64,27 @@ Blockly.Blocks['s_findbyid'] = {
 
 
 Blockly.JavaScript['s_findbyselector'] = function(block) {
-  var text_fbs_selector = block.getFieldValue('fbs_selector');
+  let text_fbs_selector = block.getFieldValue('fbs_selector');
 
-  var code = 'new dompp.FindBySelector("' + text_fbs_selector  + '")';
+  let code = 'new dompp.FindBySelector("' + text_fbs_selector  + '")';
   return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
 Blockly.JavaScript['s_findbyclass'] = function(block) {
-  var text_fbc_class = block.getFieldValue('fbc_class');
+  let text_fbc_class = block.getFieldValue('fbc_class');
 
-  var code = 'new dompp.FindBySelector(".' + text_fbc_class  + '")';
+  let code = 'new dompp.FindBySelector(".' + text_fbc_class  + '")';
   return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
 Blockly.JavaScript['s_findbyid'] = function(block) {
-  var text_fbi_id = block.getFieldValue('fbi_id');
+  let text_fbi_id = block.getFieldValue('fbi_id');
 
-  var code = 'new dompp.FindBySelector("#' + text_fbi_id  + '")';
+  let code = 'new dompp.FindBySelector("#' + text_fbi_id  + '")';
   return [code, Blockly.JavaScript.ORDER_NONE];
 };
+
+Blockly.JavaScript['s_registered_elements'] = function(block) {
+  return [block.getFieldValue('re_variable'), Blockly.JavaScript.ORDER_NONE];
+}
+

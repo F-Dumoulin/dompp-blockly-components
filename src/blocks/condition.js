@@ -119,7 +119,7 @@ Blockly.Blocks['c_comparetovalue'] = {
 
 
 Blockly.JavaScript['c_sameheight'] = function(block) {
-  var code = 'new dompp.ComposedFunction(\n'
+  let code = 'new dompp.ComposedFunction(\n'
   + 'new dompp.IsEqualTo(),\n'
   + 'new dompp.ComposedFunction(new dompp.DimensionHeight(), "$x"),\n'
   + 'new dompp.ComposedFunction(new dompp.DimensionHeight(), "$y")\n'
@@ -128,7 +128,7 @@ Blockly.JavaScript['c_sameheight'] = function(block) {
 };
 
 Blockly.JavaScript['c_samewidth'] = function(block) {
-  var code = 'new dompp.ComposedFunction(\n'
+  let code = 'new dompp.ComposedFunction(\n'
   + 'new dompp.IsEqualTo(),\n'
   + 'new dompp.ComposedFunction(new dompp.DimensionWidth(), "$x"),\n'
   + 'new dompp.ComposedFunction(new dompp.DimensionWidth(), "$y")\n'
@@ -137,7 +137,7 @@ Blockly.JavaScript['c_samewidth'] = function(block) {
 };
 
 Blockly.JavaScript['c_sameoffsettop'] = function(block) {
-  var code = 'new dompp.ComposedFunction(\n'
+  let code = 'new dompp.ComposedFunction(\n'
   + 'new dompp.IsEqualTo(),\n'
   + 'new dompp.ComposedFunction(new dompp.PageOffsetTop(), "$x"),\n'
   + 'new dompp.ComposedFunction(new dompp.PageOffsetTop(), "$y")\n'
@@ -146,7 +146,7 @@ Blockly.JavaScript['c_sameoffsettop'] = function(block) {
 };
 
 Blockly.JavaScript['c_sameoffsetleft'] = function(block) {
-  var code = 'new dompp.ComposedFunction(\n'
+  let code = 'new dompp.ComposedFunction(\n'
   + 'new dompp.IsEqualTo(),\n'
   + 'new dompp.ComposedFunction(new dompp.PageOffsetLeft(), "$x"),\n'
   + 'new dompp.ComposedFunction(new dompp.PageOffsetLeft(), "$y")\n'
@@ -155,7 +155,7 @@ Blockly.JavaScript['c_sameoffsetleft'] = function(block) {
 };
 
 Blockly.JavaScript['c_horizontallycentered'] = function(block) {
-  var code = 'new dompp.ComposedFunction(\n'
+  let code = 'new dompp.ComposedFunction(\n'
   + 'new dompp.IsEqualTo(),\n'
   + 'dompp.Plus(\n'
   + 'new dompp.ComposedFunction(new dompp.PageOffsetLeft(), "$x"),\n'
@@ -170,7 +170,7 @@ Blockly.JavaScript['c_horizontallycentered'] = function(block) {
 };
 
 Blockly.JavaScript['c_verticallycentered'] = function(block) {
-  var code = 'new dompp.ComposedFunction(\n'
+  let code = 'new dompp.ComposedFunction(\n'
   + 'new dompp.IsEqualTo(),\n'
   + 'dompp.Plus(\n'
   + 'new dompp.ComposedFunction(new dompp.PageOffsetTop(), "$x"),\n'
@@ -185,10 +185,10 @@ Blockly.JavaScript['c_verticallycentered'] = function(block) {
 };
 
 Blockly.JavaScript['c_comparetwoelems'] = function(block) {
-  var value_property = Blockly.JavaScript.valueToCode(block, 'property', Blockly.JavaScript.ORDER_ATOMIC);
-  var value_operator = Blockly.JavaScript.valueToCode(block, 'operator', Blockly.JavaScript.ORDER_ATOMIC);
+  let value_property = Blockly.JavaScript.valueToCode(block, 'property', Blockly.JavaScript.ORDER_ATOMIC);
+  let value_operator = Blockly.JavaScript.valueToCode(block, 'operator', Blockly.JavaScript.ORDER_ATOMIC);
 
-  var code = 'new dompp.ComposedFunction(\n' 
+  let code = 'new dompp.ComposedFunction(\n' 
     + value_operator + ',\n'
     + 'new dompp.ComposedFunction(' + value_property + ', "$x),\n'
     + 'new dompp.ComposedFunction(' + value_property + ', "$y)\n'
@@ -197,11 +197,11 @@ Blockly.JavaScript['c_comparetwoelems'] = function(block) {
 };
 
 Blockly.JavaScript['c_comparetovalue'] = function(block) {
-  var value_property = Blockly.JavaScript.valueToCode(block, 'property', Blockly.JavaScript.ORDER_NONE) || 'erreur';
-  var value_operator = Blockly.JavaScript.valueToCode(block, 'operator', Blockly.JavaScript.ORDER_NONE) || 'erreur';
-  var text_cpt_value = block.getFieldValue('cpt_value');
+  let value_property = Blockly.JavaScript.valueToCode(block, 'property', Blockly.JavaScript.ORDER_NONE) || 'erreur';
+  let value_operator = Blockly.JavaScript.valueToCode(block, 'operator', Blockly.JavaScript.ORDER_NONE) || 'erreur';
+  let text_cpt_value = block.getFieldValue('cpt_value');
 
-  var code = 'new dompp.ComposedFunction(\n' 
+  let code = 'new dompp.ComposedFunction(\n' 
     + value_operator + ',\n' 
     + 'new dompp.ComposedFunction(' + value_property + ', "$x"),\n' 
     + 'new dompp.ConstantFunction(' + text_cpt_value + ')\n'
