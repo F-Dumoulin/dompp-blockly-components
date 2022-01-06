@@ -96,7 +96,30 @@
 
             testManager.addEventListener('run-tests', (e) => { //callback on running tests with after selecting a test configuration 
                 console.log(JSON.parse(e.detail.data));
-                //...
+                
+                var data = JSON.parse(e.detail.data);
+
+                for(var page in data.pages) {
+                    for(var test in data.pages[page]) {
+
+                        var testData = {
+                            url: page,
+                            xml: data.tests[data.pages[page][test]],
+                            priority: 1,
+                        };
+
+                        $.ajax({
+                            url: "http://localhost:3000/tools/request",// /!\ à modifier
+                            method: "POST",
+                            headers: {
+                                Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NfdG9rZW4iOiJCP0UoSCtNYlFlVGhXbVpxNHQ3dyF6JUMmRilKQE5jUiJ9.SvhLHYtfUkf9tr0I9LthTSJnpc9aDAqxLKX8CFe4Dk4"
+                            },
+
+                            dataType: "application/x-www-form-urlencoded",
+                            data: testData,
+                        });                  
+                    }   
+                }
             });
     </script>
   </body>
